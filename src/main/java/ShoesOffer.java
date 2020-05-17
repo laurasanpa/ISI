@@ -10,16 +10,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
+import main.java.Zapatilla;
 
 @WebServlet(
     name = "ShoesOffer",
-    urlPatterns = {"/shoesoffer"}
+    urlPatterns = {"https://shoesoffer-272416.appspot.com/"}
 )
 
 public class ShoesOffer extends HttpServlet {
 	
-	public InterfazObtenerDatos scrapZalando = new ScrapJD();
-	public InterfazObtenerDatos scrapAsos = new ScrapAsos();
+	public InterfazObtenerDatos scrapUlanka = new ScrapUlanka();
+	public InterfazObtenerDatos scrapSarenza = new ScrapSarenza();
 	private ArrayList<Zapatilla> zapas = new ArrayList<Zapatilla>();
 	
 	
@@ -32,12 +33,12 @@ public class ShoesOffer extends HttpServlet {
 
     AmazonProducts amazon_products;
     ArrayList<String> datos_amazon = new ArrayList<String>();
-    ProcesarDatos intDatos = new ProcesarDatos(zapas,scrapZalando.query(request.getParameter("query")), 10);    
-    for(int i=0; i< zapas.size(); i++) {
-	    Zapatilla p = zapas.get(i);
-	    intDatos.procesarDatosZalando(p, scrapZalando.query(p.getNombre()));
-	    intDatos.procesarDatosAsos(p, scrapAsos.query(p.getNombre()));
-    }
+    ProcesarDatos intDatosUlanka = new ProcesarDatos(zapas,scrapUlanka.query(request.getParameter("query")), 3); 
+    ProcesarDatos intDatosSarenza = new ProcesarDatos(zapas,scrapSarenza.query(request.getParameter("query")), 3); 
+    
+	intDatosUlanka.procesarDatosUlanka(zapas);
+	intDatosSarenza.procesarDatosSarenza(zapas);
+    
     
     
     for(int i=0; i < zapas.size(); i++) {
@@ -50,10 +51,11 @@ public class ShoesOffer extends HttpServlet {
 		} catch (SAXException e) {
 			e.printStackTrace();
 		}
-	    if(!datos_amazon.isEmpty())
-	    	zapas.get(i).setOferta(datos_amazon, 0, "Amazon");
+	    if(!datos_amazon.isEmpty()) {
+	     Zapatilla aux = new Zapatilla(datos_amazon);
+	     zapas.add(aux);
     }
-    
+    }
     request.setAttribute("MatchedProducts", zapas);
     RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
     try {

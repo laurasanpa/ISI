@@ -1,11 +1,27 @@
 package main.java;
+
 import java.util.ArrayList;
 
 public class Zapatilla {
 	  private String nombre;
 	  private String imagen;
-	  private String valoracion;
-	  private ArrayList<Oferta> ofertas;
+	  private String precio;
+	  private String vendedor;
+	  private String link;
+	  
+	  public Zapatilla() {
+		  
+	  }
+	  
+	  public Zapatilla(ArrayList<String> datos) {
+		  this.nombre=datos.get(4);
+		  this.imagen=datos.get(3);
+		  this.precio=datos.get(2).substring(4);
+		  this.link=datos.get(1);
+		  this.vendedor="Amazon";
+		  
+	  }
+	  
 	  
 	  public String getNombre() {
 	    return nombre;
@@ -23,33 +39,27 @@ public class Zapatilla {
 	    this.imagen = imagen;
 	  }
 	  
-	  public String getValoracion() {
-	    return valoracion;
-	  }
-	  
-	  public void setValoracion(String valoracion) {
-	    this.valoracion = valoracion;
-	  }
+	  public String getPrecio() {
+			return precio;
+		}
+		
+		public void setPrecio(String precio) {
+			this.precio = precio;
+		}
+		
+		public String getLink() {
+			return link;
+		}
+		
+		public void setLink(String link) {
+			this.link = link;
+		}
 
-	  public ArrayList<Oferta> getOfertas() {
-		return ofertas;
-	  }
+		public String getVendedor() {
+			return vendedor;
+		}
 
-	  public void setOfertas(ArrayList<Oferta> ofertas) {
-		this.ofertas = ofertas;
-	  }
-	  
-	  public void setOferta(ArrayList<String> oferta, int i, String vendedor) {
-		 this.ofertas.get(i).setPrecio(oferta.get(2).substring(4));
-		 this.ofertas.get(i).setEnlace(oferta.get(1));
-		 this.ofertas.get(i).setVendedor(vendedor);
-	  }
-
-	  public void addOferta(ArrayList<String> datos, String vendedor) {
-		  Oferta oferta = new Oferta();
-		  oferta.setVendedor(vendedor);
-		  oferta.setEnlace(datos.get(1));
-		  oferta.setPrecio(datos.get(2));
-		  ofertas.add(oferta);
-	  }
-}
+		public void setVendedor(String vendedor) {
+			this.vendedor = vendedor;
+		}
+	}

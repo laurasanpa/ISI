@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.jsoup.nodes.Element;
 
 
 public class ProcesarDatos {
@@ -24,65 +25,78 @@ public class ProcesarDatos {
     return this.n_prod;
   }
   
-  public void procesarDatosJD(Zapatilla product, String html_cu) {
-	Document doc_JD = Jsoup.parse(html_cu);
-	Elements links_JD = doc_JD.select("h4.name > a");
-	Elements names_JD = doc_JD.select("h4.name");
-	Elements prices_JD = doc_JD.select("span.product-price");
-	ArrayList<String> ofertas = new ArrayList<String>();
-	ComparaCadenas compara = new ComparaCadenas(product.getNombre());
-	int maximo = 0;
-	int indice = 0;
-	String precio_JD = "";
-	String enlace_JD = "";
-	
-	for(int i=0; i < names_JD.size() && maximo < 3; i++){
-		  int valor = compara.indCoincide(names_JD.get(i).text());
-	      if(valor > maximo) {
-	    	  maximo = valor;
-	    	  indice = i;
-	      }
-	}		
-	
-	if (prices_JD.size() != 0 && maximo >= 3){
-		enlace_JD = links_JD.get(indice).attr("href");
-		precio_JD = prices_JD.get(indice).text();
-		ofertas.add(null);
-		ofertas.add(enlace_JD);
-		ofertas.add(precio_JD);
-		product.addOferta(ofertas, "JD");
-	}
- }
-  
-  public void procesarDatosAsos(Zapatilla product, String html_cu) {
-		Document doc_Asos = Jsoup.parse(html_cu);
-		Elements links_Asos = doc_Asos.select(" h3 > a");
-		Elements prices_Asos = doc_Asos.select("span.price");
-		Elements names_Asos = doc_Asos.select("h3.s_title_block");
-		ArrayList<String> ofertas = new ArrayList<String>();
-		ComparaCadenas compara = new ComparaCadenas(product.getNombre());
-		int maximo = 0;
-		int indice = 0;
-		String precio_Asos = "";
-		String enlace_Asos = "";
-		
-		for(int i=0; i < names_Asos.size() && maximo < 3; i++){
-			  int valor = compara.indCoincide(names_Asos.get(i).text());
-		      if(valor > maximo) {
-		    	  maximo = valor;
-		    	  indice = i;
-		      }
-		}		
-		
-		if (prices_Asos.size() != 0 && maximo >= 3){
-			enlace_Asos = links_Asos.get(indice).attr("href");
-			precio_Asos = prices_Asos.get(indice).text();
-			ofertas.add(null);
-			ofertas.add(enlace_Asos);
-			ofertas.add(precio_Asos);
-			product.addOferta(ofertas, "Asos");
+  public void procesarDatosSarenza(ArrayList<Zapatilla> zapas) {
+		Document doc_Sarenza = this.doc;
+		Elements names_Sarenza = doc_Sarenza.select("span.model");
+		Elements links_Sarenza = doc_Sarenza.select("a[href]");
+		Elements prices_Sarenza = doc_Sarenza.select("span.mighty price");
+		Elements imgs_Sarenza = doc_Sarenza.select("img[src]");  
+		ArrayList<String> nombres_Sarenza = new ArrayList<String>();
+		ArrayList<String> enlaces_Sarenza = new ArrayList<String>();
+		ArrayList<String> precios_Sarenza = new ArrayList<String>();
+		ArrayList<String> imagenes_Sarenza = new ArrayList<String>();
+
+		for(Element e : names_Sarenza){
+	      nombres_Sarenza.add(e.text());
+		}
+		for(Element e : imgs_Sarenza){
+	      String aux = e.attr("data-lazy-src");
+	      imagenes_Sarenza.add(aux);
+		}
+		for(Element l : links_Sarenza){
+			String aux =l.attr("href");
+			enlaces_Sarenza.add(aux);
+		}
+		for(Element p : prices_Sarenza){
+			precios_Sarenza.add(p.text());
 		}
 		
-  }
+		for(int i=0; i < names_Sarenza.size() && i < getNProd(); i++){
+			Zapatilla aux = new Zapatilla();
+			aux.setNombre(nombres_Sarenza.get(i));
+			aux.setImagen(imagenes_Sarenza.get(i));//i*2
+			aux.setPrecio(precios_Sarenza.get(i));
+			aux.setLink(enlaces_Sarenza.get(i));
+			aux.setVendedor("Sarenza");
+			zapas.add(aux);
+		}
+	  }
   
-}
+  public void procesarDatosUlanka(ArrayList<Zapatilla> zapas) {
+	  	Document doc_Ulanka = this.doc;
+	  	Elements links_Ulanka = doc_Ulanka.select("h3");
+		Elements names_Ulanka = doc_Ulanka.select("href");
+		Elements prices_Ulanka = doc_Ulanka.select("strong");
+		Elements imgs_Ulanka = doc_Ulanka.select("div.data-image");
+
+		ArrayList<String> nombres_Ulanka = new ArrayList<String>();
+		ArrayList<String> enlaces_Ulanka = new ArrayList<String>();
+		ArrayList<String> precios_Ulanka = new ArrayList<String>();
+		ArrayList<String> imagenes_Ulanka = new ArrayList<String>();
+
+		for(Element e : names_Ulanka){
+	      nombres_Ulanka.add(e.text());
+		}
+		for(Element e : imgs_Ulanka){
+	      String aux = e.attr("data-lazy-src");
+	      imagenes_Ulanka.add(aux);
+		}
+		for(Element l : links_Ulanka){
+			String aux =l.attr("href");
+			enlaces_Ulanka.add(aux);
+		}
+		for(Element p : prices_Ulanka){
+			precios_Ulanka.add(p.text());
+		}
+		
+		for(int i=0; i < names_Ulanka.size() && i < getNProd(); i++){
+			Zapatilla aux = new Zapatilla();
+			aux.setNombre(nombres_Ulanka.get(i));
+			aux.setImagen(imagenes_Ulanka.get(i));//i*2
+			aux.setPrecio(precios_Ulanka.get(i));
+			aux.setLink(enlaces_Ulanka.get(i));
+			aux.setVendedor("Ulanka");
+			zapas.add(aux);
+		}
+	  }
+  }

@@ -8,11 +8,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class ScrapAsos implements InterfazObtenerDatos{
-	private String inicial  = "https://www.asos.com/es";
+public class ScrapSarenza implements InterfazObtenerDatos{
+	private String inicial  = "https://www.sarenza.es/";
 	public String getPage(String request){
 		String words[] = request.split(" ");
-		words[0]="/search/?q="+words[0];
+		words[0]="store/product/search/list/view?origin=s&search="+words[0];
 		if(words.length > 1){
 			words[0] += "+" + words[1];
 			if(words.length > 2)

@@ -38,10 +38,18 @@ public class AmazonProducts {
 	
 	// process
 	NodeList urls = doc.getElementsByTagName("DetailPageURL");
-	NodeList prices = doc.getElementsByTagName("LowestNewPrice");   
+	NodeList prices = doc.getElementsByTagName("LowestNewPrice");
+	NodeList imgs = doc.getElementsByTagName("URL");
+	NodeList names = doc.getElementsByTagName("DisplayValue");
+	
 	Node url = urls.item(0);
 	Element e_url = (Element) url;
 	Node price = prices.item(0);//.getLastChild();
+	Node img = imgs.item(0);
+	Element e_img = (Element) img;
+	Node name = names.item(0);
+	Element e_name = (Element) name;
+	
 	
 	Element e_price = (Element) price;
 	
@@ -53,6 +61,8 @@ public class AmazonProducts {
 	   	System.out.println(e_price.toString()+"\n");
 	   	System.out.println("\n");*/
 		salida.add(e_price.getTextContent().substring(7)+"€");
+		salida.add(e_img.getTextContent());
+		salida.add(e_name.getTextContent());
 	
 	
 		        }
