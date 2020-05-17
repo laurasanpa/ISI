@@ -1,0 +1,26 @@
+@font-face{
+    font-family: "League";
+    src: url(../fuentes/LeagueGothic-Regular.otf)
+}
+
+
+
+header{
+    position: relative;
+    top:0%;
+    width: 100%;
+    background-image: url("img/fondo1f.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+a,p,form{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-decoration: none;
+    font-size: large;
+    color: #000000;
+    text-align: justify;
+    display: inline-block;
+    padding-top: 0%;
+   }
+
