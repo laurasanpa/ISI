@@ -23,4 +23,26 @@ a,p,form{
     display: inline-block;
     padding-top: 0%;
    }
+#Buscador{
+	height: 15%;
+}
+#Ofertas{
+	width: 100%;
+	border-style:  solid;
+}
+.articulo{
+	height: 15%;
+}
+.img_articulo{
+	width: 15%;
+	float: left;
+}
+.nombre_articulo{
+	display: inline-block;
+	float:left;
+	margin-left: 2px;	
+}
+.enlaces{
+	float:left;
+}
 
