@@ -29,12 +29,11 @@ public class Oferta {
 		this.enlace = enlace;
 	}
 
-	public String getTienda() {
+	public String getVendedor() {
 		return vendedor;
 	}
 
 	public void setVendedor(String vendedor) {
 		this.vendedor = vendedor;
 	}
-
 }

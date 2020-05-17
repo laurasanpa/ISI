@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
-
+/*
 @WebServlet(
     name = "ShoesOffer",
     urlPatterns = {"/shoesoffer"}
@@ -65,4 +65,4 @@ public class ShoesOffer extends HttpServlet {
 		e.printStackTrace();
 	}
   }
-}
+}*/
