@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
-/*
+
 @WebServlet(
     name = "ShoesOffer",
     urlPatterns = {"/shoesoffer"}
@@ -18,9 +18,8 @@ import org.xml.sax.SAXException;
 
 public class ShoesOffer extends HttpServlet {
 	
-	public InterfazDatos scrapPZ = new ScrappingPZ();
-	public InterfazDatos scrapT2P = new ScrapingT2P();
-	public InterfazDatos scrapPS = new ScrappingPS();
+	public InterfazObtenerDatos scrapZalando = new ScrapJD();
+	public InterfazObtenerDatos scrapAsos = new ScrapAsos();
 	private ArrayList<Zapatilla> zapas = new ArrayList<Zapatilla>();
 	
 	
@@ -33,13 +32,11 @@ public class ShoesOffer extends HttpServlet {
 
     AmazonProducts amazon_products;
     ArrayList<String> datos_amazon = new ArrayList<String>();
-    IntegracionDatos intDatos = new IntegracionDatos(zapas,scrapPZ.query(request.getParameter("query")), 10);
-    intDatos.procesarDatosPZ(Palas, scrapPZ.query(request.getParameter("query")));
-    
+    ProcesarDatos intDatos = new ProcesarDatos(zapas,scrapZalando.query(request.getParameter("query")), 10);    
     for(int i=0; i< zapas.size(); i++) {
-	    zapas p = zapas.get(i);
-	    intDatos.procesarDatosT2P(p, scrapT2P.query(p.getNombre()));
-	    intDatos.procesarDatosPS(p, scrapPS.query(p.getNombre()));
+	    Zapatilla p = zapas.get(i);
+	    intDatos.procesarDatosZalando(p, scrapZalando.query(p.getNombre()));
+	    intDatos.procesarDatosAsos(p, scrapAsos.query(p.getNombre()));
     }
     
     
@@ -65,4 +62,4 @@ public class ShoesOffer extends HttpServlet {
 		e.printStackTrace();
 	}
   }
-}*/
+}

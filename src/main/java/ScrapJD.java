@@ -7,11 +7,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class ScrapZalando implements InterfazObtenerDatos{
-	private String inicial  = "https://www.zalando.es/mujer/";
+public class ScrapJD implements InterfazObtenerDatos{
+	private String inicial  = "https://www.jdsports.es/";
 	public String getPage(String request){
 		String words[] = request.split(" ");
-		words[0]="?q=zapatillas+"+words[0];
+		words[0]="search/"+words[0];
 		if(words.length > 1){
 			words[0] += "+" + words[1];
 			if(words.length > 2)
