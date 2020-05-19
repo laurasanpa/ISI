@@ -1,7 +1,8 @@
 <%@page import="java.util.ArrayList"%>
-<%@page import="main.java.Zapatilla"%>
-<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-    
+<%@page import="main.java.*"%>
+<%@page import="org.w3c.dom.Document"%>
+<%@page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -17,54 +18,72 @@
 	  	</header>
 	  	<main>
 	  		<section id="Buscador">
-				<form id="busqueda" method="get" autocomplete="ON">
+				<form id="busqueda.jsp" method="GET" autocomplete="ON">
 					<fieldset>
 						<label for="buscar"> Buscar:</label>
 		                <input type="text" name= "query"/>
-		                
-		                
-		            </fieldset>
+		        		<input type="submit" value="Buscar">
+					</fieldset>
 				</form>
 			</section>
-			<section id="resultados">
-			<%
+			<section>
+				<h2>Productos</h2>
+				<ul class="lista-productos">
+					<%
+					//Para recoger el valor de un formulario en JSP, se utiliza la función request.getParameter.
+					//En la variable producto se almacena la búsqueda introducida por el usuario.
+					String producto = request.getParameter("query");
+					
+					//Se crea un objeto de la clase ComponerBusquedas, que es la encargada de confeccionar la salida
+					//añadiendo los productos obtenidos de las diferentes fuentes de datos.
+					if(request.getParameter("query")!=null){
+					ProcesarDatos oferta = new ProcesarDatos(producto);
+					oferta.busqueda();
+					}else{
+						out.println("<h5>No hay query</h5>");
+					}
+					
+					//contiene todas laszapatillas y su información
+					//ArrayList<Zapatilla> zapas = oferta.getZapatillas();
+					
+					/*for(int i=0 ; i<zapas.size() ; i++){
+						Zapatilla p = zapas.get(i);
+						
+						//Se consulta la URL del producto para saber de dónde procede y así
+						//añadir el logo en el resultado
+						String pathLogo;
+						if(p.getVendedor()=="Ulanka"){
+							pathLogo = "Ulanka";
+						}else if(p.getVendedor()=="Sarenza"){
+							pathLogo = "Sarenza";
+						}
+						else{
+							pathLogo = "Amazon";
+						}					
+						
+						out.println("<li class='producto'><h3>"+p.getPrecio()+" "+p.esPrecioKilo()+
+								"</h3><img class='logo-super' src='img/"+pathLogo+
+								"-logo.jpg' alt='logo supermercado'><a href='"+
+								p.getUrlProducto()+"' target='_blank'><img src='"+p.getUrlImagen()+
+								"' alt='"+p.getProducto()+"'></a><p class='titulo'>"+p.getProducto()+
+								"</p></li>");
+					}*/
+					
+					%>
+				</ul>
+				
+	
 
-	   			if(request.getParameter("query") != null){
-	   				ArrayList<Zapatilla> zapas = (ArrayList<Zapatilla>)request.getAttribute("MatchedProducts");
-	   				if(zapas.size() != 0){
-	   				for(int i = 0; i < zapas.size(); i++){ 
-						Zapatilla p = zapas.get(i);%>
-			   				<article class="articulo">      
-			   					<div class="img_articulo">                     
-		   							 <img src=<% out.print(p.getImagen()); %> alt="foto-articulo" />
-		   						</div>
-		   						<div class="nombre_articulo">
-			   						<h5><% out.print(p.getNombre());%></h5>	
-			   						<BR>
-			   						<h5><% out.print(p.getPrecio());%></h5>				
-	   							</div>
-	   							<div class="enlace">
-		   						<% 
-	   							String enlace="";	
-              					enlace+=p.getLink();
-						   		out.print("</h5><a href="+enlace+"/></h5>");
-						   		if(p.getVendedor()=="Amazon")
-						   			out.print("<img src="+"img/Amazon.png"+" alt="+"Amazon"+"/></a>");
-						   		if(p.getVendedor()=="Zacaris")
-						   			out.print("<img src="+"img/Zacaris.jpg"+" alt="+"Zacaris"+"/></a>");
-						   		if(p.getVendedor()=="Ulanka")
-						   			out.print("<img src="+"img/Ulanka.jpg"+" alt="+"Ulanka"+"/></a>");
-              					 }}%>
-              				 </div>
-							</article> 
-							<%
-	   				}else{
-	   						out.print("No se han encontrado resultados.");
-	   						}%>	   		
-			</section>
+</body>
 		</main>
 		<footer>
 	  		<h3>Autores: Cristina de la Torre Villaverde, Laura Sánchez Parra.</h3>
 	 	</footer>
 	</body>
 </html>
+
+
+
+
+
+	

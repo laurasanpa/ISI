@@ -1,16 +1,47 @@
 package main.java;
 
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import org.jsoup.Jsoup;
 
-public class ScrapSarenza implements InterfazObtenerDatos{
+import org.jsoup.Connection.Response;
+import org.jsoup.nodes.Document;
+
+
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+public class ScrapSarenza{
+	
 	private String inicial  = "https://www.sarenza.es/";
-	public String getPage(String request){
+	private int n_prod =5;
+	
+	
+    public static int getStatusConnectionCode(String url) throws IOException {
+		
+        Response response = null;
+		
+        response = Jsoup.connect(url).userAgent("Mozilla/5.0").timeout(100000).ignoreHttpErrors(true).execute();
+        return response.statusCode();
+    }
+	
+	public static Document getHtmlDocument(String url) throws IOException {
+
+        Document doc = null;
+
+        doc = Jsoup.connect(url).userAgent("Mozilla/5.0").timeout(100000).get();
+
+        return doc;
+
+    }
+	
+	public void busquedaSarenza (String request, ArrayList<Zapatilla> zapas) throws IOException{
+		//Pruebo solo a meter una 
+		Zapatilla z = new Zapatilla();
+		zapas.add(z);
+		/*
 		String words[] = request.split(" ");
 		words[0]="store/product/search/list/view?origin=s&search="+words[0];
 		if(words.length > 1){
@@ -22,48 +53,46 @@ public class ScrapSarenza implements InterfazObtenerDatos{
 			if(words.length > 4)
 				words[0] += "+" + words[4];
 		}
-		String nueva;
-		nueva = SendHTTP(inicial + words[0]);
+		String url=inicial+words[0];
+		if (getStatusConnectionCode(url) == 200) {
 		
-		return nueva;
-	}
-	
-	private String ReadBuffer(BufferedReader buffer){
-		String read = "";
-		String line = "";
-		try {
-			while((line = buffer.readLine()) != null)
-				read += line;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return read;
-	}
-	
-	private String SendHTTP( String url){ 
-		HttpURLConnection connection;
-		BufferedReader response;
-		String res = "";
-		try{	
-			connection = (HttpURLConnection) new URL( url ).openConnection();
-			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			connection.setRequestMethod("GET");
-			connection.connect();	
-		    response = new BufferedReader(new InputStreamReader(connection.getInputStream()));		
-			res = ReadBuffer(response);
-		} catch (MalformedURLException e){
-			e.printStackTrace();
-		} catch (IOException e){
-			e.printStackTrace();
-		}
+		Document doc_Sarenza = getHtmlDocument(url);
+		Elements names_Sarenza = doc_Sarenza.select("span.model");
+		Elements links_Sarenza = doc_Sarenza.select("a[href]");
+		Elements prices_Sarenza = doc_Sarenza.select("span.mighty price");
+		Elements imgs_Sarenza = doc_Sarenza.select("img[src]");  
+		ArrayList<String> nombres_Sarenza = new ArrayList<String>();
+		ArrayList<String> enlaces_Sarenza = new ArrayList<String>();
+		ArrayList<String> precios_Sarenza = new ArrayList<String>();
+		ArrayList<String> imagenes_Sarenza = new ArrayList<String>();
 
-		return res;
+		for(Element e : names_Sarenza){
+	      nombres_Sarenza.add(e.text());
+		}
+		for(Element e : imgs_Sarenza){
+	      String aux = e.attr("data-lazy-src");
+	      imagenes_Sarenza.add(aux);
+		}
+		for(Element l : links_Sarenza){
+			String aux =l.attr("href");
+			enlaces_Sarenza.add(aux);
+		}
+		for(Element p : prices_Sarenza){
+			precios_Sarenza.add(p.text());
+		}
+		
+		for(int i=0; i < names_Sarenza.size() && i < n_prod; i++){
+			Zapatilla aux = new Zapatilla();
+			aux.setNombre(nombres_Sarenza.get(i));
+			aux.setImagen(imagenes_Sarenza.get(i));//i*2
+			aux.setPrecio(precios_Sarenza.get(i));
+			aux.setLink(enlaces_Sarenza.get(i));
+			aux.setVendedor("Sarenza");
+			zapas.add(aux);
+			}
+		}*/
 	}
+		
 
-	@Override
-	public String query(String request) {
-		return getPage(request);
-	}
 }
 
